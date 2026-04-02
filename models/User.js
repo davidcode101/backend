@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Name is required'],
       trim: true,
+      minlength: [2, 'Name must be at least 2 characters'],
     },
     email: {
       type: String,
@@ -14,7 +15,13 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
+      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'],
+    },
+    phone: {
+      type: String,
+      trim: true,
+      match: [/^[+]?[\d\s\-().]{7,15}$/, 'Please enter a valid phone number (7–15 digits)'],
+      default: null,
     },
     password: {
       type: String,
@@ -31,15 +38,22 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// 🔐 Hash password before saving (Modern async version without 'next')
-userSchema.pre('save', async function () {
-  // If password hasn't been modified, exit the function
-  if (!this.isModified('password')) return;
 
-  // Hash the password
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+// 🔐 Hash password before saving
+userSchema.pre('save', async function (next) {
+  try {
+    if (!this.isModified('password')) return next();
+
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+
+    next();
+  } catch (error) {
+    console.error('❌ Error hashing password:', error.message);
+    next(error);
+  }
 });
+
 
 // 🔑 Compare password (for login)
 userSchema.methods.matchPassword = async function (enteredPassword) {
@@ -55,6 +69,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   }
 };
 
+
 // 🚫 Prevent duplicate email crash (clean error)
 userSchema.post('save', function (error, doc, next) {
   if (error.code === 11000) {
@@ -63,6 +78,7 @@ userSchema.post('save', function (error, doc, next) {
     next(error);
   }
 });
+
 
 // 📦 Export model
 module.exports = mongoose.model('User', userSchema);
