@@ -18,7 +18,7 @@ const generateToken = (user) => {
 
 // ✅ Validation helpers
 const EMAIL_RE = /^\S+@\S+\.\S+$/;
-const PHONE_RE = /^[+]?[\d\s\-().]{7,15}$/;
+const PHONE_RE = /^\+91\s?\d{10}$/;
 
 function validateRegister(name, email, phone, password) {
   const errors = [];
@@ -27,7 +27,7 @@ function validateRegister(name, email, phone, password) {
   if (!email || !EMAIL_RE.test(email))
     errors.push('Please enter a valid email address');
   if (phone && !PHONE_RE.test(phone))
-    errors.push('Please enter a valid phone number (7–15 digits)');
+    errors.push('Please enter a 10-digit phone number with +91 country code');
   if (!password || password.length < 6)
     errors.push('Password must be at least 6 characters');
   return errors;
