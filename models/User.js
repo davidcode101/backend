@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
       trim: true,
-      match: [/^[+]?[\d\s\-().]{7,15}$/, 'Please enter a valid phone number (7–15 digits)'],
+      match: [/^\+91\s?\d{10}$/, 'Please enter a 10-digit phone number with +91 country code'],
       default: null,
     },
     password: {
