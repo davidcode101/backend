@@ -127,6 +127,8 @@ shipmentSchema.pre('save', function (next) {
 });
 
 
+
+
 // 📊 Expose helpers
 shipmentSchema.statics.STATUS_ENUM = STATUS_ENUM;
 shipmentSchema.statics.calculatePrice = calculatePrice;
