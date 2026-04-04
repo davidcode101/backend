@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Password is required'],
       minlength: [6, 'Password must be at least 6 characters'],
-      select: false, // hidden by default
+      select: false,
     },
     role: {
       type: String,
@@ -65,7 +65,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
     console.error('❌ Error comparing password:', error.message);
     throw error;
   }
-});
+};  // ✅ fixed: was }); before
 
 // 📦 Export model
 module.exports = mongoose.model('User', userSchema);
