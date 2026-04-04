@@ -38,7 +38,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 // 🔐 Hash password before saving
 userSchema.pre('save', async function (next) {
   try {
@@ -54,7 +53,6 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-
 // 🔑 Compare password (for login)
 userSchema.methods.matchPassword = async function (enteredPassword) {
   try {
@@ -67,11 +65,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
     console.error('❌ Error comparing password:', error.message);
     throw error;
   }
-};
-
-
-
-
+});
 
 // 📦 Export model
 module.exports = mongoose.model('User', userSchema);
