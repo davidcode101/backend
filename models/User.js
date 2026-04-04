@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'],
-    },
+    }
     phone: {
       type: String,
       trim: true,
@@ -70,14 +70,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 
-// 🚫 Prevent duplicate email crash (clean error)
-userSchema.post('save', function (error, doc, next) {
-  if (error.code === 11000) {
-    next(new Error('Email already exists'));
-  } else {
-    next(error);
-  }
-});
+
 
 
 // 📦 Export model
