@@ -11,7 +11,7 @@ const {
 
 const router = express.Router();
 
-router.post('/', protect, authorize('user'), createShipment);
+router.post('/', protect, authorize('user', 'admin'), createShipment);
 router.get('/', protect, getShipments);
 router.get('/stats/overview', protect, adminOnly, getStats);
 router.get('/:trackingId', trackShipment);

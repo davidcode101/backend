@@ -93,23 +93,17 @@ const calculatePrice = (weight, distance) => {
 };
 
 // 🚚 Pre-save hook
-shipmentSchema.pre('save', function (next) {
-  try {
-    if (this.isNew) {
-      this.trackingId = nanoid(); // ✅ already uppercase, already 10 chars
-      this.statusHistory.push({
-        status: 'Pending',
-        timestamp: new Date(),
-        note: 'Shipment created',
-      });
-      if (!this.price) {
-        this.price = calculatePrice(this.weight, this.distance);
-      }
+shipmentSchema.pre('save', function () {
+  if (this.isNew) {
+    this.trackingId = nanoid(); // ✅ already uppercase, already 10 chars
+    this.statusHistory.push({
+      status: 'Pending',
+      timestamp: new Date(),
+      note: 'Shipment created',
+    });
+    if (!this.price) {
+      this.price = calculatePrice(this.weight, this.distance);
     }
-    next();
-  } catch (error) {
-    console.error('❌ Pre-save Error:', error.message);
-    next(error);
   }
 });
 
