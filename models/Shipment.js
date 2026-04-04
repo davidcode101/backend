@@ -77,7 +77,6 @@ const shipmentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 // 📦 Price calculation helper
 const calculatePrice = (weight, distance) => {
   try {
@@ -100,7 +99,6 @@ const calculatePrice = (weight, distance) => {
     throw error;
   }
 };
-
 
 // 🚚 Pre-save hook
 shipmentSchema.pre('save', function (next) {
@@ -126,13 +124,9 @@ shipmentSchema.pre('save', function (next) {
   }
 });
 
-
-
-
 // 📊 Expose helpers
 shipmentSchema.statics.STATUS_ENUM = STATUS_ENUM;
 shipmentSchema.statics.calculatePrice = calculatePrice;
-
 
 // ✅ Safe export
 module.exports = mongoose.models.Shipment || mongoose.model('Shipment', shipmentSchema);
